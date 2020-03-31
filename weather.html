@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+	 <link rel="stylesheet" href="weather.css">
+
+	<title>My Weather Page</title>
+</head>
+
+<body>
+
+	<div class="weather" id="weatherWidget">
+		<div class="weather-loc"></div>
+		<div class="weather-humidity"></div>
+		<div class="weather-temp"></div>
+		<img class="weather-tomorrow" />
+		<img class="weather-dayaftertomorrow" />
+	</div>
+
+	<button type="button" id=weatherBtn>Update Weather</button>
+
+	<script>
+		let city;
+		let state;
+		let humidity;
+		let temp;
+		let image1;
+		let image2;
+
+
+		// function ajaxCallback(event){
+		// 	console.log("in callback event")
+		// 	alert("Here is the response"+ event.target.responseText);
+		// 	city=JSON.parse(event.target.responseText).location.city
+		// 	console.log(city)
+		// 	document.getElementById("weatherDisplay").innerHTML=city
+
+		// }
+
+		function fetchWeather(){
+			 // console.log("in fetchWeather")
+			 // var xmlHttp= new XMLHttpRequest();
+			 // xmlHttp.open("GET","https://classes.engineering.wustl.edu/cse330/content/weather_json.php",true);
+			 // xmlHttp.addEventListener("load",ajaxCallback,false);
+			 // xmlHttp.send(null);
+
+
+			//AJAX request to weather server
+			fetch('https://classes.engineering.wustl.edu/cse330/content/weather_json.php', {
+			    method: "POST"
+			})
+		  .then(res =>res.json())
+		  .then(response => {
+		  	console.log(response)
+
+		  	city=response.location.city + " "+ response.location.state;
+		  	humidity=response.atmosphere.humidity;
+		  	temp=response.current.temp;
+
+		  	mainDiv=document.getElementById("weatherWidget")
+		  	weather_loc=mainDiv.getElementsByTagName("div")[0]
+		  	weather_loc.innerHTML=city
+
+		  	 weather_temp=mainDiv.getElementsByTagName("div")[2]
+		  	 weather_temp.innerHTML=temp 
+
+		  	 weather_hum=mainDiv.getElementsByTagName("div")[1]
+		  	 weather_hum.innerHTML=humidity
+
+		  	 weather_tom=mainDiv.getElementsByTagName("img")[0]
+		  	 tom_code=response.tomorrow.code;
+		  	 base_url="http://us.yimg.com/i/us/nws/weather/gr/##ds.png"
+		  	 url=base_url.replace("##",tom_code)
+		  	 weather_tom.src=url
+
+		  	 weather_dayafter=mainDiv.getElementsByTagName("img")[1]
+		  	 dayafter_code=response.dayafter.code;
+		  	 base_url="http://us.yimg.com/i/us/nws/weather/gr/##ds.png"
+		  	 url=base_url.replace("##",dayafter_code)
+		  	 weather_dayafter.src=url
+
+		 //  	 fetch( 'http://us.yimg.com/i/us/nws/weather/gr/32ds.png', {
+			//     method: "POST"
+			// })
+			//   .then(res =>res.json())
+			//   .then(response => {
+			//   	console.log(response)	
+			//   	})	  	 
+
+
+		  })
+		  .catch(error => console.error('Error:',error))
+		}
+
+		document.addEventListener("DOMContentLoaded", fetchWeather, false);
+		document.getElementById('weatherBtn').addEventListener("click",function(d){
+			fetchWeather()
+		})
+
+
+	</script>
+
+</body>
+</html>

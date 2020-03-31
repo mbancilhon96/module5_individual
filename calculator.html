@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+
+<style>
+</style>
+
+</head>
+
+<body>
+
+
+<div id="inputs">
+	<label for="number1">First Number</label>
+	<input type=number id="number1" name="number1"> <br><br>
+
+
+	<div id="operations">
+		<label for="addition">+</label>
+	    <input type="radio" name="operation" id="addition" value="+"><br>
+		<label for="subtraction">-</label>
+		<input type="radio" name="operation" id="subtraction" value="-"><br>
+		<label for="multiplication">x</label>
+		<input type="radio" name="operation" id="multiplication" value="*"><br><br>
+		<label for="division">%</label>
+		<input type="radio" name="operation" id="division" value="/"><br><br>
+	</div>
+
+	<label for="number2">Second Number</label>
+	<input type=number id="number2" name="number2"> <br><br>
+
+  	<button type="button" value="Submit" id="submit">Go!</button>
+	<input type=result id="result" name="result"> <br><br>
+
+</div>
+
+	<script>
+
+		let number1;
+		let number2;
+		let operation;
+		let result;
+
+		document.getElementById("number1").addEventListener("input",function(){
+			number1=parseFloat(this.value)
+			console.log(number1)
+		});
+		document.getElementById("number2").addEventListener("input",function(){
+			number2=parseFloat(this.value)
+			console.log(number2)
+
+		});
+
+		document.getElementById("submit").addEventListener("click",function(){
+			if (document.getElementById('addition').checked) {
+			  result=number1+number2;
+			}
+			if (document.getElementById('subtraction').checked) {
+			  result=number1-number2;
+			}	
+			if (document.getElementById('division').checked) {
+				//division by 0
+				if (number2==0){
+					result="inf"
+				}
+				else{
+					result=number1/number2;
+		
+				}
+			}
+			if (document.getElementById('multiplication').checked) {
+			  result=number1*number2;
+			}	
+			console.log(result)
+			document.getElementById("result").value=result
+		});
+
+
+	</script>
+
+
+</body>
+
+
+</html>
